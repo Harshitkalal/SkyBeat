@@ -1,0 +1,90 @@
+{% extends 'music/base.html' %}
+{% block title %}Add a New Song{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<link href="https://fonts.googleapis.com/css?family=Tangerine&display=swap" rel="stylesheet">
+
+<style>
+.cards{
+  margin-top:100px;
+  margin-left:100px;
+}
+
+
+h1,h2{
+font-family: 'Tangerine', cursive;
+
+  margin-left:10px;
+}
+.si{
+  width:300px;
+  min-height:500px;
+}
+.tb{
+  width:800px;
+  min-height:100px;
+}
+.txt_color{
+  color:white;
+}
+.btn_style{
+  border-radius:20px ;
+  border:none;
+  color:white;
+  text-align:center;
+  background-color:#F55656;
+  width:100px;
+  height:30px;
+  margin-top:10px;
+}
+.formclass{
+  border-radius: 10px;
+  height:580px;
+  width:700px;
+  margin-left :30px;
+  margin-top:10px;
+  padding:20px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  background-color:rgba(7,7,7,0.6);
+
+}
+.tg{
+  font-size:40px;
+font-family: 'Tangerine', cursive;
+  margin-left:200px;
+
+}
+</style>
+<div  style="margin-top:30px;"class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-7">
+
+                <div class="panel-body">
+
+                    {% if error_message %}
+                        <p style="color:red;"><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+                    <form class="form-horizontal formclass"   action="" method="post" enctype="multipart/form-data">
+                       <p class="tg">Add a New Song</p>
+                        {% csrf_token %}
+                        <input type="hidden" name="album" value="{{ album }}">
+                        {% include 'music/form_template.html' %}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn_style">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,164 @@
+
+{% extends 'music/base.html' %}
+{% block title %}{{ album }}{% endblock %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<link href="https://fonts.googleapis.com/css?family=Tangerine&display=swap" rel="stylesheet">
+<style>
+.cards{
+  margin-top:100px;
+  margin-left:100px;
+}
+
+
+h1,h2{
+  font-family: 'Tangerine', cursive;
+  font-style:italic;
+  margin-left:10px;
+}
+.si{
+  width:300px;
+  min-height:500px;
+}
+.tb{
+  width:800px;
+  min-height:100px;
+}
+.txt_color{
+  color:white;
+}
+
+.btn_style{
+  border-radius:20px ;
+  border:none;
+  color:white;
+  text-align:center;
+  background-color:#F55656;
+  width:135px;
+  height:35px;
+  margin-top:10px;
+  margin-right:10px;
+}
+.ac{
+  width:240px;
+  height:40px;
+
+
+}
+
+.t_m{
+  margin-left:40px;
+}
+active{
+  color:yellow;
+}
+</style>
+<div class=" albums-container container-fluid ">
+
+   <div  style="margin-top:20px;"class= "row">
+
+        <div class="col-sm-4 col-md-3">
+          <div class="card bg">
+
+
+          <div class="card-body">
+
+
+        <div class="bg">
+
+
+       <a href="{% url 'music:detail' album.id %}"></a>
+
+             {% if album.album_logo %}
+        <img src="{{album.album_logo.url}}"   class="mx-auto d-block"class="img-thumbnail" height="300px"width="300px"class="img-responsive "alt="">
+        {%else%}
+          <h3>No image To display</h3>
+          {%endif%}
+        <h1 class="txt_color">{{album.album_title}}</h1>
+        <h1 class="txt_color"><small>{{ album.genre}}</small></h1>
+        <h2 class="txt_color"><small>{{album.artist}}</small></h2>
+        <h3></h3>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="  bg col-sm-8 col-md-9   ">
+
+  <ul class="nav nav-pills" style="margin-bottom: 10px;">
+              <li role="presentation" class="active "><a class=" btn btn-danger btn_style" href="{% url 'music:index'  %}">View All</a></li>
+              <li role="presentation" class=""><a class=" btn btn-danger btn_style" href="{% url 'music:create-song'  %}">Add New Song</a></li>
+              </ul>
+
+              <div class="card bg">
+                <div class="card-body">
+                  <div class="bg">
+                      <h3 style="color:white;">All Songs</h3>
+                      {%if error_message%}
+                       {%endif%}
+                     <table class="table">
+                       <thead class="thead-dark">
+                         <tr>
+                           <th   class="t_m  txt_color" >Title</th>
+                           <th  class="  txt_color">Audio</th>
+                           <th   class="  txt_color">Favorite</th>
+                           <th  class="  txt_color">Actions</th>
+                         </tr>
+                       </thead>
+                       <tbody>
+                         {% for song in album.song_set.all%}
+                           <tr >
+
+                             <td class="txt_color">{{ song.song_title }}</td>
+
+                             <td >
+
+                               <audio class="ac"  controls >
+
+
+                              <source src="{{song.audio_file.url}}" type="audio/mp3">
+
+                              </audio>
+
+                             </td>
+                             <td>
+
+
+                               <a  class="txt_color " href="" class="btn-favorite">
+                                 <span class="  fas fa-star {% if song.is_favorite %}active{% endif %}"></span>
+                              </a>
+
+
+
+
+
+                             </td>
+                             <td>
+                            <form action="{% url 'music:delete-song' song.id %}"  method="post" style="display:inline;">
+                              {%csrf_token%}
+                              <input type="hidden" name="song_id" value="{{song.id}}"/>
+                              <button type="submit" class="btn btn-danger xs">
+                             <span class="fas fa-remove"></span> Delete
+                              </button>
+                            </form>
+                             </td>
+                           </tr>
+                           {% endfor%}
+                       </tbody>
+
+                     </table>
+
+                  </div>
+                </div>
+              </div>
+
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'music/base.html' %}
+{% block albums_active %}active{% endblock %}
+
+{% block body %}
+<link href="https://fonts.googleapis.com/css?family=Tangerine&display=swap" rel="stylesheet">
+<style>
+
+
+  .btn_style{
+    border-radius:20px ;
+    border:none;
+    color:white;
+    text-align:center;
+    background-color:#F55656;
+    width:160px;
+    height:40px;
+    margin-top:10px;
+  }
+.cards{
+  margin:20px;
+
+}
+.ma{
+  margin-bottom:10px;
+  margin-left:10px;
+}
+h2,h4{
+  font-family: 'Tangerine', cursive;
+
+  color:white;
+
+
+}
+.bg{
+background-color:rgba(7,7,7,0.6);
+}
+.trans{
+  background-color: rgba(255,255,255,0.3);
+}
+.rc{
+  border-radius:25px;
+  background-color:#F55656;
+}
+hover{
+
+}
+h3{
+  color:white;
+  font-size:40px;
+  font-family: 'Tangerine', cursive;
+
+  margin-top:10px;
+
+}
+.txt_color{
+  color:white;
+}
+.link-color{
+  color:white;
+}
+.link-color:hover{
+  color:white;
+}
+.fav-color{
+  color:yellow;
+}
+.ac{
+  width:240px;
+  height:40px;
+
+
+}
+.active{
+  color:yellow;
+  border:orange;
+}
+</style>
+<div class="albums-container container-fluid">
+
+    <!-- Albums -->
+    <div class="row">
+        <div class="col-sm-12 ">
+            <h3>{{user.username}}'s Albums</h3>
+        </div>
+
+        {% if all_albums %}
+            {% for album in all_albums %}
+
+
+
+                <div class="cards ">
+                    <div class="bg">
+                        <a href="{% url 'music:detail' album.id %}">
+                            <img src="{{ album.album_logo.url }}"   class="img-responsive  img-thumbnail"class="mx-auto d-block" height="300px"width="300px">
+                        </a>
+                        <div class="caption ma">
+                            <h2>{{ album.album_title }}</h2>
+                            <h4>{{ album.artist }}</h4>
+
+                            <!-- View Details -->
+                            <div style="">
+
+
+                            <a href="{% url 'music:detail' album.id %}" class="btn ma btn-danger btn-sm rc" role="button">View Details</a>
+
+                            <!-- Delete Album -->
+                            <form action="{%url 'music:album-delete' album.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="album_id" value="{{ album.id }}" />
+                                <button  type="submit" class="btn ma btn-default btn-sm">
+
+                                    <span class="fas fa-trash-alt "></span>
+                                </button>
+                                  </form>
+                                  <form action="{% url 'music:album-favorite' album.id %}" method="post" style="display: inline;">
+                                      {% csrf_token %}
+                                <input type="hidden" name="album_id" value="{{ album.id }}" />
+                                <button type="submit" class="btn  ma btn-default btn-sm ">
+                                    <span class="fas fa-star {% if album.is_favorite %}active{% endif %}"></span>
+                                </button>
+
+                            </form>
+                              </div>
+                            <!-- Favorite Album -->
+                          </div>
+
+                    </div>
+
+                </div>
+                {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'music:create_album'%}">
+                  <div class="col-sm-offset-4 col-sm-10">
+                     <button type="button" class=" btn_style ">
+                       <span class="fas fa-plus"></span>&nbsp; Add an Album
+                     </button>
+
+                  </div>
+
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- If user searches and there are songs -->
+    {% if songs %}
+        <div class="row">
+            <div class="col-sm-12">
+                <h3>Songs</h3>
+            </div>
+            <div class="col-sm-12">
+                <div class="card bg">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="txt_color">Song Title</th>
+                                    <th class="txt_color">Artist</th>
+                                    <th class="txt_color">Audio File</th>
+                                    <th class="txt_color">Album</th>
+                                    <th class="txt_color">Favorite</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for song in songs %}
+                                    <tr>
+                                        <td class="txt_color">{{ song.song_title }}</td>
+                                        <td class="txt_color">{{ song.album.artist }}</td>
+                                        <td>
+
+                                        <audio class="ac"  controls >
+                                          <source src="{{song.audio_file.url}}" type="audio/mp3">
+                                          </audio>
+                                        </td>
+                                        <td class="txt_color">
+                                            <a   href="{% url 'music:detail' song.album.id %}">
+                                                <img src="{{song.album.album_logo.url}}" class="img-responsive" style="width: 30px; float: left; margin-right: 10px;" />
+                                            </a>
+                                            <a  class="link-color" href="{%url 'music:detail' song.album.id %}">{{ song.album.album_title }}</a>
+                                        </td>
+                                        <td >
+                                            <a class="fav-color" href="{%url 'music:favorite-song' song.id %}" class="btn-favorite"><span class="fas fa-star "></span></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

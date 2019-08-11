@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% load static %}
+    <title>{% block title %}SkyBeat{%endblock%}</title>
+     <link rel="shortcut icon" type="image/x-icon" href="{%  static 'music/images/favicon.ico'%}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Tangerine">
+    <link href="https://fonts.googleapis.com/css?family=Great+Vibes&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+
+  <style>
+
+body{
+   background-image: url("{%static 'music/images/back01.jpg'%}");
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-position: center;
+
+}
+
+.t_style{
+font-family: 'Great Vibes', cursive;
+font-size: 25px;
+font-style: italic;
+font-weight: bold;
+
+
+
+}
+.bg{
+background-color:rgba(7,7,7,0.6);
+}
+.trans{
+  background-color: rgba(255,255,255,0.3);
+}
+  </style>
+  </head>
+
+
+  <body>
+
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark    trans ">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+
+
+      </button>
+      <a class="navbar-brand t_style" href="{% url 'music:index'%}">
+    <img src="{% static 'music/images/logo.jpg' %}" width="40px">&nbsp;SkyBeat
+      </a>
+
+        <ul class="navbar-nav   mr-auto mt-2 mt-lg-0" id="nav">
+          <li class="nav-item ">
+            <a class="nav-link hv" href="{% url 'music:songs' 'all'%}"><span class="fas fa-music" aria-hidden="true"></span>&nbsp; Song</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'music:index'%}">  <span class="fas fa-compact-disc" aria-hidden="true"></span>&nbsp;  Album</a>
+          </li>
+
+      <li class="nav-item ">
+
+        <form class="  navbar-left form-inline my-2 my-lg-0 " role="search" method="get" action="{% url 'music:index'%}">
+          <input class="form-control mr-sm-2"  type="search" placeholder="Search" name="q" value="{{request.GET.q}}"aria-label="Search">
+          <button class="btn  btn-light  " type="submit">Search</button>
+       </form>
+     </li>
+    </ul>
+
+    <ul class="navbar-nav  navbar-right">
+
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'music:create_album'%}">  <span class="fas fa-plus" aria-hidden="true"></span>&nbsp; Add Album</a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item ">
+        <a class="nav-link" href="{% url 'music:logout'%}"><span class="fas fa-power-off" aria-hidden="true"></span>&nbsp; Logout</a>
+      </li>
+      {% else %}
+      <li class="nav-item ">
+
+        <a class="nav-link" href="{% url 'music:login'%}"><span class="fas fa-login" aria-hidden="true"></span>&nbsp; Login</a>
+      </li>
+      <li class="nav-item ">
+
+        <a class="nav-link" href="{% url 'music:register'%}"><span class="fas fa-login" aria-hidden="true"></span>&nbsp; Register</a>
+      </li>
+      {% endif %}
+
+
+    </ul>
+
+    </nav>
+
+
+    {% block body %}
+    {% endblock %}
+
+  </body>
+
+</html>

@@ -1,0 +1,113 @@
+{% extends 'music/base.html' %}
+{% block title %}All Songs{% endblock %}
+{% block songs_active %}active{% endblock %}
+
+{% block body %}
+<link href="https://fonts.googleapis.com/css?family=Tangerine&display=swap" rel="stylesheet">
+
+<style >
+  .txt_color{
+  color:white;
+  }
+
+  .btn_style{
+    border-radius:20px ;
+    border:none;
+    color:white;
+    text-align:center;
+    background-color:#F55656;
+    width:140px;
+    height:35px;
+    margin-top:10px;
+    margin-right:10px;
+
+  }
+  .ac{
+    width:240px;
+    height:40px;
+
+
+  }
+  .link-color{
+    color:white;
+  }
+  .link-color:hover{
+    color:white;
+  }
+  .fav-color{
+    color:yellow;
+  }
+  h3{
+    color:white;
+    font-size:50px;
+
+    font-family: 'Tangerine', cursive;
+
+    margin-top:10px;
+
+  }
+
+</style>
+<div class="container-fluid songs-container">
+
+  <div class="col-sm-12 ">
+      <h3>All  songs</h3>
+  </div>
+
+    <div class="row" style="margin-bottom:20px;margin-top:20px;">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" {% if filter_by == 'all' %}class="active"{% endif %}><a class="btn btn-danger btn_style" href="{% url 'music:songs' 'all' %}">View All</a></li>
+                <li role="presentation" class="active"><a class="btn btn-danger btn_style" href="">Favorites</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="card bg">
+                <div class="card-body">
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="txt_color">Song Title</th>
+                                <th class="txt_color">Artist</th>
+                                <th class="txt_color">Audio File</th>
+                                <th class="txt_color">Album</th>
+                                <th class="txt_color">Favorite</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for song in song_list %}
+                                <tr>
+                                    <td  class="txt_color">{{ song.song_title }}</td>
+                                    <td class="txt_color">{{ song.album.artist }}</td>
+                                    <td>
+
+                                    <audio class="ac"  controls >
+                                      <source src="{{song.audio_file.url}}" type="audio/mp3"></audio>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'music:detail' song.album.id %}">
+                                            <img src="{{ song.album.album_logo.url }}" class="img-responsive" style="width: 30px; float: left; margin-right: 10px;" />
+                                        </a>
+                                        <a  class="txt_color link-color" href="{% url 'music:detail' song.album.id %}">{{ song.album.album_title }}</a>
+                                    </td>
+                                    <td>
+                                        <a  class="txt_color " href="" class="btn-favorite"><span class="fas fa-star {% if song.is_favorite %}active{% endif %}"></span></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

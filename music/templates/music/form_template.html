@@ -1,0 +1,15 @@
+<style>
+.c , p{
+  color:white;
+  size:40px;
+}</style>
+{% for field in form %}
+
+  <div class="col-sm-4 col-sm-10">
+    <span class="text-danger small"><p>{{field.error}}</p></span>
+  </div>
+<label  style="margin-bottom:0px;"class="  col-sm-4"><p>{{field.label_tag}}</p></label>
+<div class="col-sm-10 c">{{field}}</div>
+
+
+{% endfor %}
